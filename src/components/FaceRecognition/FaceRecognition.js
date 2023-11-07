@@ -14,8 +14,10 @@ const FaceRecognition = ({ imageUrl, box, imageError }) => {
               id="inputImage"
               alt=""
               src={imageUrl}
-              width="500px"
-              height="auto"
+              width={0}
+              height={0}
+              sizes="100vw"
+              style={{ width: "500px", height: "auto" }} // optional
             />
             <div
               className="bounding-box"

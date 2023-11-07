@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
-export const POST = async (request = Request) => {
+export const POST = async (request) => {
   const body = await request.json();
   const { email, password } = body;
 

@@ -39,18 +39,18 @@ function Home() {
       setIsSignedIn(true);
       onRouteChange("home");
       const decodedUser = jwtDecode(token);
-      fetch(
-        `https://nameless-mesa-43874.herokuapp.com/profile/${decodedUser.id}`,
-        {
-          method: "GET",
-        }
-      )
+      fetch(`/api/profile/${decodedUser.id}`, {
+        method: "GET",
+      })
         .then((response) => response.json())
-        .then((user) => {
+        .then((response) => {
+          const { user } = response;
           loadUser(user);
         });
     }
   };
+
+  console.log("usersaqwe :", user);
 
   useEffect(() => {
     gettingUserToken();
@@ -116,7 +116,7 @@ function Home() {
         const height = image.height;
 
         if (width && height) {
-          fetch("https://nameless-mesa-43874.herokuapp.com/image", {
+          fetch("/api/image", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -124,7 +124,8 @@ function Home() {
             }),
           })
             .then((response) => response.json())
-            .then((count) => {
+            .then((response) => {
+              const { count } = response;
               setUser({
                 ...user,
                 entries: count,
@@ -149,6 +150,7 @@ function Home() {
   };
 
   const loadUser = (data) => {
+    console.log("userr: ", data);
     const user = {
       id: data.id,
       name: data.name,
