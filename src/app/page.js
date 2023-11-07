@@ -10,7 +10,7 @@ import Particles from "react-tsparticles";
 import particlesOptions from "@/config/particles";
 import Signin from "@/Forms/Signin/Signin";
 import Register from "@/Forms/Register/Register";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { loadFull } from "tsparticles";
 import styles from "./page.module.css";
 

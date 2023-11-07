@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import "../forms.css";
+import { toast } from "react-toastify";
 
 const Signin = ({ onRouteChange, loadUser }) => {
   const [signin, setSignin] = useState({ email: "", password: "" });
@@ -13,34 +14,27 @@ const Signin = ({ onRouteChange, loadUser }) => {
   };
 
   const onSigninSubmit = () => {
-    fetch("/api/register", {
+    fetch("/api/signin", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: "Hiiii" }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(signin),
     })
-      .then((res) => {
-        return res.json();
+      .then((response) => response.json())
+      .then((response) => {
+        const { token, error } = response;
+
+        if (error) return toast(error, { type: "error", delay: 2000 });
+
+        if (token) {
+          const user = jwtDecode(token);
+          if (user.id) {
+            localStorage.setItem("token", token);
+            loadUser(user);
+            onRouteChange("home");
+          }
+        }
       })
-      .then((res) => console.log("response  :", res))
-      .catch((err) => console.log("Error :", err));
-    // fetch("https://nameless-mesa-43874.herokuapp.com/signin", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(signin),
-    // })
-    //   .then((response) => response.json())
-    //   .then((token) => {
-    //     if (token) {
-    //       const user = jwtDecode(token);
-    //       if (user.id) {
-    //         localStorage.setItem("token", token);
-    //         loadUser(user);
-    //         onRouteChange("home");
-    //       }
-    //     }
-    //   });
+      .catch((error) => toast(error.message, { type: "error", delay: 2000 }));
   };
 
   return (
